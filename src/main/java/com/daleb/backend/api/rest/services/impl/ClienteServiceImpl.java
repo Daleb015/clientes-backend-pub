@@ -1,4 +1,4 @@
-package com.daleb.backend.api.rest.service.impl;
+package com.daleb.backend.api.rest.services.impl;
 
 import java.util.List;
 

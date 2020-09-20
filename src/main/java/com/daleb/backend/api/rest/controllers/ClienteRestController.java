@@ -21,7 +21,7 @@ import com.daleb.backend.api.rest.services.ClienteService;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
-@RequestMapping("/api/cliente")
+@RequestMapping("/api/clientes")
 public class ClienteRestController {
 
 	@Autowired
@@ -34,6 +34,7 @@ public class ClienteRestController {
 
 	@GetMapping("/{id}")
 	public Cliente show(@PathVariable String id) {
+				
 		return clienteService.findById(id);
 	}
 
