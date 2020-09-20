@@ -10,4 +10,5 @@ public interface ClienteService {
 	public void delete(String id);
 	public Cliente findById(String id);
 	public Cliente update(Cliente cliente);
+	public Cliente updateId(Cliente cliente);
 }

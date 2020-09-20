@@ -27,8 +27,8 @@ public class ClienteServiceImpl implements ClienteService {
 		return clienteRepository.findAll();
 	}
 
-
 	public Cliente save(Cliente cliente) {
+
 		return clienteRepository.insert(cliente);
 	}
 
@@ -50,7 +50,14 @@ public class ClienteServiceImpl implements ClienteService {
 		Update update = new Update();
 		update.set("nombre", cliente.getNombre());
 		update.set("apellido", cliente.getApellido());
-		return clienteRepository.findById(mongoTemplate.findAndModify(query, update, Cliente.class).getId()).orElse(null);
+		return clienteRepository.findById(mongoTemplate.findAndModify(query, update, Cliente.class).getId())
+				.orElse(null);
+	}
+
+	@Override
+	public Cliente updateId(Cliente cliente) {
+
+		return clienteRepository.save(cliente);
 	}
 
 }
