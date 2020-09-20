@@ -81,7 +81,7 @@ public class ClienteRestController {
 		}
 		response.put("mensaje", "El cliente ha sido creado con exito");
 		response.put("cliente", clienteNew);
-		return new ResponseEntity<Cliente>(clienteNew, HttpStatus.CREATED);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
@@ -110,13 +110,25 @@ public class ClienteRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<Cliente>(updatedClient, HttpStatus.OK);
+		response.put("cliente", updatedClient);
+		response.put("mensaje", "el cliente ha sido actualizado con exito");
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable String id) {
-		clienteService.delete(id);
+	public ResponseEntity<?> delete(@PathVariable String id) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			clienteService.delete(id);
+		} catch (DataAccessException dae) {
+			log.info("Error de eliminacion de datos " + dae.getMessage());
+			response.put("mensaje", "Error al eliminar cliente en base de datos");
+			response.put("error", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("mensaje", "Cliente eliminado con exito");
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NO_CONTENT);
 	}
 
 }
