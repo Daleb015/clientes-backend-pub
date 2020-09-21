@@ -91,7 +91,7 @@ public class ClienteRestController {
 		Map<String, Object> response = new HashMap<>();
 
 		findedClient.setApellido(cliente.getApellido());
-		findedClient.setEmail(cliente.getApellido());
+		findedClient.setEmail(cliente.getEmail());
 		findedClient.setNombre(cliente.getNombre());
 
 		Cliente updatedClient = null;
