@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,6 +22,7 @@ public class Cliente {
 	@Id
 	private String id;
 	@NotEmpty
+	@Size(min = 4,max = 12)
 	private String nombre;
 	@NotEmpty
 	@NotNull
