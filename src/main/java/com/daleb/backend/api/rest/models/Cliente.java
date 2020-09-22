@@ -21,14 +21,14 @@ public class Cliente {
 
 	@Id
 	private String id;
-	@NotEmpty
-	@Size(min = 4,max = 12)
+	@NotEmpty(message = "El campo nombre no puede estar vacio")
+	@Size(min = 4,max = 12, message = "El nombre debe tener de 4 a 12 caracteres")
 	private String nombre;
 	@NotEmpty
 	@NotNull
 	private String apellido;
 	@NotEmpty
-	@Email
+	@Email(message = "El correo no tiene un formato valido")
 	private String email;
 
 	@Field("create_at")
