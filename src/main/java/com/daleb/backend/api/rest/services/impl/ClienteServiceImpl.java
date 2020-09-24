@@ -3,6 +3,8 @@ package com.daleb.backend.api.rest.services.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -58,6 +60,11 @@ public class ClienteServiceImpl implements ClienteService {
 	public Cliente updateId(Cliente cliente) {
 
 		return clienteRepository.save(cliente);
+	}
+
+	@Override
+	public Page<Cliente> findAll(Pageable pageable) {
+		return clienteRepository.findAll(pageable);
 	}
 
 }

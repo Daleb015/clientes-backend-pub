@@ -11,6 +11,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -38,9 +41,15 @@ public class ClienteRestController {
 	@Autowired
 	private ClienteService clienteService;
 
-	@GetMapping("/all")
+	@GetMapping()
 	public List<Cliente> index() {
 		return clienteService.findAll();
+	}
+	
+	@GetMapping("/page/{page}")
+	public Page<Cliente> index(@PathVariable Integer page){
+		Pageable pageable = PageRequest.of(page, 5);
+		return clienteService.findAll(pageable);
 	}
 
 	@GetMapping("/{id}")
