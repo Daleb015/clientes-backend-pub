@@ -87,9 +87,6 @@ public class ClienteRestController {
 		}
 
 		try {
-			ZoneId zoneIdCol = ZoneId.of("America/Bogota");
-			ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneIdCol);
-			cliente.setCreateAt(zonedDateTime);
 			clienteNew = clienteService.save(cliente);
 		} catch (DataAccessException dae) {
 			log.info("Error de creacion de datos " + dae.getMessage());

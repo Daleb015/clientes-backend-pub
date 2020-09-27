@@ -1,6 +1,6 @@
 package com.daleb.backend.api.rest.models;
 
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -10,6 +10,8 @@ import javax.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
@@ -29,8 +31,9 @@ public class Cliente {
 	@Email(message = "El correo no tiene un formato valido")
 	private String email;
 
+	@NotNull(message = "La fecha de creacion no puede ser vacia")
 	@Field("create_at")
-	// @JsonFormat(pattern = "yyyy-MM-dd")
-	private ZonedDateTime createAt;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date createAt;
 
 }
