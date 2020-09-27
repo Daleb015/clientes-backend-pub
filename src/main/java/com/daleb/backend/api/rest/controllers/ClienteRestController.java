@@ -1,12 +1,12 @@
 package com.daleb.backend.api.rest.controllers;
 
-import java.util.Date;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +45,10 @@ public class ClienteRestController {
 	public List<Cliente> index() {
 		return clienteService.findAll();
 	}
-	
+
 	@GetMapping("/page/{page}")
-	public Page<Cliente> index(@PathVariable Integer page){
-		Pageable pageable = PageRequest.of(page, 5);
+	public Page<Cliente> index(@PathVariable Integer page) {
+		Pageable pageable = PageRequest.of(page, 4);
 		return clienteService.findAll(pageable);
 	}
 
@@ -76,20 +76,20 @@ public class ClienteRestController {
 	public ResponseEntity<?> create(@Valid @RequestBody Cliente cliente, BindingResult bindingResult) {
 		Cliente clienteNew = null;
 		Map<String, Object> response = new HashMap<>();
-		
+
 		if (bindingResult.hasErrors()) {
-			List<String> errors = bindingResult.getFieldErrors()
-					.stream()
-					.map(err -> "El campo "+err.getField()+" "+err.getDefaultMessage())
+			List<String> errors = bindingResult.getFieldErrors().stream()
+					.map(err -> "El campo " + err.getField() + " " + err.getDefaultMessage())
 					.collect(Collectors.toList());
-			
+
 			response.put("errors", errors);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
-		
-		
+
 		try {
-			cliente.setCreateAt(new Date());
+			ZoneId zoneIdCol = ZoneId.of("America/Bogota");
+			ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneIdCol);
+			cliente.setCreateAt(zonedDateTime);
 			clienteNew = clienteService.save(cliente);
 		} catch (DataAccessException dae) {
 			log.info("Error de creacion de datos " + dae.getMessage());
@@ -103,21 +103,21 @@ public class ClienteRestController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente, BindingResult bindingResult, @PathVariable("id") String id) {
+	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente, BindingResult bindingResult,
+			@PathVariable("id") String id) {
 
 		Cliente findedClient = clienteService.findById(id);
 		Map<String, Object> response = new HashMap<>();
 
 		if (bindingResult.hasErrors()) {
-			List<String> errors = bindingResult.getFieldErrors()
-					.stream()
-					.map(err -> "El campo "+err.getField()+" "+err.getDefaultMessage())
+			List<String> errors = bindingResult.getFieldErrors().stream()
+					.map(err -> "El campo " + err.getField() + " " + err.getDefaultMessage())
 					.collect(Collectors.toList());
-			
+
 			response.put("errors", errors);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
-		
+
 		findedClient.setApellido(cliente.getApellido());
 		findedClient.setEmail(cliente.getEmail());
 		findedClient.setNombre(cliente.getNombre());
@@ -131,7 +131,7 @@ public class ClienteRestController {
 			response.put("mensaje", "Error al actualizar cliente en base de datos");
 			response.put("error", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		} 
+		}
 		response.put("cliente", updatedClient);
 		response.put("mensaje", "el cliente ha sido actualizado con exito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
