@@ -24,6 +24,7 @@ public class ClienteServiceImpl implements ClienteService {
 	@Autowired
 	ClienteRepository clienteRepository;
 
+	@Transactional
 	@Override
 	public List<Cliente> findAll() {
 		return clienteRepository.findAll();
