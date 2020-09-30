@@ -151,7 +151,7 @@ public class ClienteRestController {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			Cliente cliente = clienteService.findById(id);
-			String nombreFotoAnterior = cliente.getPhoto();
+			String nombreFotoAnterior = cliente.getFoto();
 
 			if (nombreFotoAnterior != null && !nombreFotoAnterior.isEmpty()) {
 				Path pathAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
@@ -200,7 +200,7 @@ public class ClienteRestController {
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 
-			String nombreFotoAnterior = cliente.getPhoto();
+			String nombreFotoAnterior = cliente.getFoto();
 
 			if (nombreFotoAnterior != null && !nombreFotoAnterior.isEmpty()) {
 				Path pathAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
@@ -211,7 +211,7 @@ public class ClienteRestController {
 				}
 			}
 
-			cliente.setPhoto(nombreArchivo);
+			cliente.setFoto(nombreArchivo);
 			clienteService.updateId(cliente);
 
 			response.put("cliente", cliente);

@@ -36,6 +36,6 @@ public class Cliente {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date createAt;
 
-	private String photo;
+	private String foto;
 	
 }
