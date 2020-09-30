@@ -2,6 +2,8 @@ package com.daleb.backend.api.rest.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,10 +17,13 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -215,6 +220,27 @@ public class ClienteRestController {
 		}
 
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
+
+	@GetMapping("/uploads/img/{nombrefoto:.+}")
+	public ResponseEntity<Resource> verFoto(@PathVariable String nombrefoto) {
+		Path rutaArchivo = Paths.get("uploads").resolve(nombrefoto).toAbsolutePath();
+		log.info(rutaArchivo.toString());
+		Resource recurso = null;
+		try {
+			recurso = new UrlResource(rutaArchivo.toUri());
+		} catch (MalformedURLException e) {
+			throw new RuntimeException("Error al ubicar el recurso");
+		}
+
+		if (!recurso.exists() && !recurso.isReadable()) {
+			throw new RuntimeException("Error al ubicar el recurso");
+		}
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
+
+		return new ResponseEntity<Resource>(recurso, headers, HttpStatus.OK);
 	}
 
 }
