@@ -173,7 +173,7 @@ public class ClienteRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NO_CONTENT);
 	}
 
-	@PostMapping("/upload")
+	@PostMapping("/uploads")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") String id) {
 		Map<String, Object> response = new HashMap<String, Object>();
 
