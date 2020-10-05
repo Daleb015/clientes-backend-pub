@@ -234,12 +234,19 @@ public class ClienteRestController {
 		}
 
 		if (!recurso.exists() && !recurso.isReadable()) {
-			throw new RuntimeException("Error al ubicar el recurso");
+			rutaArchivo = Paths.get("src/main/resources/static/images").resolve("no-user.png").toAbsolutePath();
+			try {
+				recurso = new UrlResource(rutaArchivo.toUri());
+			} catch (MalformedURLException e) {
+				throw new RuntimeException("Error al ubicar el recurso");
+			}
+			log.error("Error al ubicar el recurso");
+			
 		}
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
-
+		
 		return new ResponseEntity<Resource>(recurso, headers, HttpStatus.OK);
 	}
 
