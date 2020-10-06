@@ -32,8 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.daleb.backend.api.rest.models.Cliente;
+import com.daleb.backend.api.rest.models.Region;
 import com.daleb.backend.api.rest.services.ClienteService;
 import com.daleb.backend.api.rest.services.IUploadFileService;
+import com.daleb.backend.api.rest.services.RegionService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,6 +50,9 @@ public class ClienteRestController {
 
 	@Autowired
 	private IUploadFileService iUploadFileService;
+
+	@Autowired
+	private RegionService regionService;
 
 	@GetMapping()
 	public List<Cliente> index() {
@@ -126,6 +131,7 @@ public class ClienteRestController {
 		findedClient.setApellido(cliente.getApellido());
 		findedClient.setEmail(cliente.getEmail());
 		findedClient.setNombre(cliente.getNombre());
+		findedClient.setRegion(cliente.getRegion());
 
 		Cliente updatedClient = null;
 
@@ -212,6 +218,15 @@ public class ClienteRestController {
 		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
 
 		return new ResponseEntity<Resource>(recurso, headers, HttpStatus.OK);
+	}
+
+	@GetMapping("/regiones")
+	public ResponseEntity<List<Region>> listarRegiones() {
+
+		List<Region> regiones = regionService.getAllRegions();
+
+		return new ResponseEntity<List<Region>>(regiones, HttpStatus.OK);
+
 	}
 
 }
