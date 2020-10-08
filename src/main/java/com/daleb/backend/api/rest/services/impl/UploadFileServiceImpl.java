@@ -13,13 +13,13 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.daleb.backend.api.rest.services.IUploadFileService;
+import com.daleb.backend.api.rest.services.UploadFileService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class IUploadFileServiceImpl implements IUploadFileService {
+public class UploadFileServiceImpl implements UploadFileService {
 
 	private final static String DIRECTORIO_UPLOAD = "uploads";
 

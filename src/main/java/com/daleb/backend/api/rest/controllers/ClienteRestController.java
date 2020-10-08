@@ -34,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.daleb.backend.api.rest.models.Cliente;
 import com.daleb.backend.api.rest.models.Region;
 import com.daleb.backend.api.rest.services.ClienteService;
-import com.daleb.backend.api.rest.services.IUploadFileService;
+import com.daleb.backend.api.rest.services.UploadFileService;
 import com.daleb.backend.api.rest.services.RegionService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class ClienteRestController {
 	private ClienteService clienteService;
 
 	@Autowired
-	private IUploadFileService iUploadFileService;
+	private UploadFileService iUploadFileService;
 
 	@Autowired
 	private RegionService regionService;
