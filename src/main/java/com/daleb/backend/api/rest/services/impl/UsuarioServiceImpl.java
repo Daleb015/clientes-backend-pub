@@ -15,12 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.daleb.backend.api.rest.models.Usuario;
 import com.daleb.backend.api.rest.repositorys.UsuarioRepository;
+import com.daleb.backend.api.rest.services.UsuarioService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class UsuarioServiceImpl implements UserDetailsService {
+public class UsuarioServiceImpl implements UsuarioService,  UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -41,6 +42,12 @@ public class UsuarioServiceImpl implements UserDetailsService {
 		User user = new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnable(), true, true, true, authorithies);
 		
 		return user;
+	}
+
+	@Override
+	public Usuario findByUsername(String username) {
+		
+		return usuarioRepository.findByUsername(username).orElse(null);
 	}
 
 }

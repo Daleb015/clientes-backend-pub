@@ -1,4 +1,4 @@
-package com.daleb.backend.api.rest.config;
+package com.daleb.backend.api.rest.auth;
 
 public class SecurityConfig {
 	

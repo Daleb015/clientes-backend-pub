@@ -1,4 +1,4 @@
-package com.daleb.backend.api.rest.config;
+package com.daleb.backend.api.rest.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
