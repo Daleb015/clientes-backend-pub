@@ -20,7 +20,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.antMatchers("/api/clientes/**").hasRole("ADMIN")*/
 		.anyRequest().authenticated();
 	}
-
-		
-	
 }
