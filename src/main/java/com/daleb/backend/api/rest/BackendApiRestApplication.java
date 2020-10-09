@@ -14,15 +14,14 @@ import com.daleb.backend.api.rest.converters.ZonedDateTimeWriteConverter;
 
 @SpringBootApplication
 public class BackendApiRestApplication {
-	
-    @Bean
-    public MongoCustomConversions customConversions() {
-        List<Converter<?, ?>> converters = new ArrayList<>();
-        converters.add(new ZonedDateTimeReadConverter());
-        converters.add(new ZonedDateTimeWriteConverter());
-        return new MongoCustomConversions(converters);
-    }
-	
+	@Bean
+	public MongoCustomConversions customConversions() {
+		List<Converter<?, ?>> converters = new ArrayList<>();
+		converters.add(new ZonedDateTimeReadConverter());
+		converters.add(new ZonedDateTimeWriteConverter());
+		return new MongoCustomConversions(converters);
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApiRestApplication.class, args);
 	}
