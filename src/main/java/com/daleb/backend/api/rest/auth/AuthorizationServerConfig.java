@@ -20,9 +20,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -32,7 +29,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Autowired
 	private TokenEnhancer tokenEnhancer;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -55,12 +52,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-		
-		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer,accessTokenConverter()));
-		
+
+		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer, accessTokenConverter()));
+
 		endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore())
-				.accessTokenConverter(accessTokenConverter())
-				.tokenEnhancer(tokenEnhancerChain);
+				.accessTokenConverter(accessTokenConverter()).tokenEnhancer(tokenEnhancerChain);
 	}
 
 	@Bean

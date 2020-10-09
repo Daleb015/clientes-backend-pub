@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.daleb.backend.api.rest.models.Region;
 import com.daleb.backend.api.rest.repositorys.RegionRepository;
@@ -16,6 +17,7 @@ public class RegionServiceImpl implements RegionService {
 	RegionRepository regionRepository;
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<Region> getAllRegions() {
 		
 		return regionRepository.findAll();
@@ -28,6 +30,7 @@ public class RegionServiceImpl implements RegionService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Region findById(String id) {
 		
 		return regionRepository.findById(id).get();

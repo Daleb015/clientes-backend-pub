@@ -24,6 +24,12 @@ public class Usuario {
 
 	private Boolean enable;
 
+	private String nombre;
+	
+	private String apellido;
+	
+	private String email;
+	
 	@DBRef
 	private List<Role> roles;
 

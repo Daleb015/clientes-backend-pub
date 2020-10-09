@@ -44,6 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService,  UserDetailsService {
 		return user;
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Usuario findByUsername(String username) {
 		
