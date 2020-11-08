@@ -1,6 +1,7 @@
 package com.daleb.backend.api.rest.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -40,9 +41,11 @@ public class Cliente {
 
 	private String foto;
 
-	@JsonIgnoreProperties(value = { "target" })
+	@JsonIgnoreProperties(value = {"target"})
 	@NotNull(message = "El cliente debe tener region")
 	@DBRef(lazy = true)
 	private Region region;
+
+	private List<Factura> facturas;
 
 }
