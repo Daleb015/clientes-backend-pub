@@ -34,14 +34,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.daleb.backend.api.rest.models.Cliente;
 import com.daleb.backend.api.rest.models.Region;
+import com.daleb.backend.api.rest.repositorys.FacturaRepository;
 import com.daleb.backend.api.rest.services.ClienteService;
-import com.daleb.backend.api.rest.services.UploadFileService;
 import com.daleb.backend.api.rest.services.RegionService;
+import com.daleb.backend.api.rest.services.UploadFileService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@CrossOrigin(origins = { "http://localhost:4200" })
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteRestController {
@@ -55,6 +56,9 @@ public class ClienteRestController {
 	@Autowired
 	private RegionService regionService;
 
+	@Autowired
+	private FacturaRepository FacturaRepository;
+
 	@GetMapping()
 	public List<Cliente> index() {
 		return clienteService.findAll();
@@ -66,7 +70,7 @@ public class ClienteRestController {
 		return clienteService.findAll(pageable);
 	}
 
-	@Secured({"ROLE_ADMIN","ROLE_USER"})
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@GetMapping("/{id}")
 	public ResponseEntity<?> show(@PathVariable String id) {
 
@@ -75,31 +79,39 @@ public class ClienteRestController {
 		try {
 			cliente = clienteService.findById(id);
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al realizar la consulta en la base de datos");
-			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			response.put("mensaje",
+					"Error al realizar la consulta en la base de datos");
+			response.put("error", e.getMessage().concat(": ")
+					.concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response,
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		if (cliente == null) {
-			response.put("mensaje", "El cliente id ".concat(id.toString().concat(" No existe en la base de datos!")));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+			response.put("mensaje", "El cliente id ".concat(
+					id.toString().concat(" No existe en la base de datos!")));
+			return new ResponseEntity<Map<String, Object>>(response,
+					HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 	}
 
 	@Secured("ROLE_ADMIN")
 	@PostMapping
-	public ResponseEntity<?> create(@Valid @RequestBody Cliente cliente, BindingResult bindingResult) {
+	public ResponseEntity<?> create(@Valid @RequestBody Cliente cliente,
+			BindingResult bindingResult) {
 		Cliente clienteNew = null;
 		Map<String, Object> response = new HashMap<>();
 
 		if (bindingResult.hasErrors()) {
 			List<String> errors = bindingResult.getFieldErrors().stream()
-					.map(err -> "El campo " + err.getField() + " " + err.getDefaultMessage())
+					.map(err -> "El campo " + err.getField() + " "
+							+ err.getDefaultMessage())
 					.collect(Collectors.toList());
 
 			response.put("errors", errors);
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Map<String, Object>>(response,
+					HttpStatus.BAD_REQUEST);
 		}
 
 		try {
@@ -107,29 +119,34 @@ public class ClienteRestController {
 		} catch (DataAccessException dae) {
 			log.info("Error de creacion de datos " + dae.getMessage());
 			response.put("mensaje", "Error al crear cliente en base de datos");
-			response.put("error", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			response.put("error", dae.getMessage().concat(": ")
+					.concat(dae.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response,
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "El cliente ha sido creado con exito");
 		response.put("cliente", clienteNew);
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+		return new ResponseEntity<Map<String, Object>>(response,
+				HttpStatus.CREATED);
 	}
 
 	@Secured("ROLE_ADMIN")
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente, BindingResult bindingResult,
-			@PathVariable("id") String id) {
+	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente,
+			BindingResult bindingResult, @PathVariable("id") String id) {
 
 		Cliente findedClient = clienteService.findById(id);
 		Map<String, Object> response = new HashMap<>();
 
 		if (bindingResult.hasErrors()) {
 			List<String> errors = bindingResult.getFieldErrors().stream()
-					.map(err -> "El campo " + err.getField() + " " + err.getDefaultMessage())
+					.map(err -> "El campo " + err.getField() + " "
+							+ err.getDefaultMessage())
 					.collect(Collectors.toList());
 
 			response.put("errors", errors);
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Map<String, Object>>(response,
+					HttpStatus.BAD_REQUEST);
 		}
 
 		findedClient.setApellido(cliente.getApellido());
@@ -143,9 +160,12 @@ public class ClienteRestController {
 			updatedClient = clienteService.updateId(findedClient);
 		} catch (DataAccessException dae) {
 			log.info("Error de actualizacion de datos " + dae.getMessage());
-			response.put("mensaje", "Error al actualizar cliente en base de datos");
-			response.put("error", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			response.put("mensaje",
+					"Error al actualizar cliente en base de datos");
+			response.put("error", dae.getMessage().concat(": ")
+					.concat(dae.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response,
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("cliente", updatedClient);
 		response.put("mensaje", "el cliente ha sido actualizado con exito");
@@ -165,18 +185,24 @@ public class ClienteRestController {
 			clienteService.delete(id);
 		} catch (DataAccessException dae) {
 			log.info("Error de eliminacion de datos " + dae.getMessage());
-			response.put("mensaje", "Error al eliminar cliente en base de datos");
-			response.put("error", dae.getMessage().concat(": ").concat(dae.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			response.put("mensaje",
+					"Error al eliminar cliente en base de datos");
+			response.put("error", dae.getMessage().concat(": ")
+					.concat(dae.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response,
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		response.put("mensaje", "Cliente eliminado con exito");
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Map<String, Object>>(response,
+				HttpStatus.NO_CONTENT);
 	}
 
-	@Secured({"ROLE_ADMIN","ROLE_USER"})
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@PostMapping("/uploads")
-	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") String id) {
+	public ResponseEntity<?> upload(
+			@RequestParam("archivo") MultipartFile archivo,
+			@RequestParam("id") String id) {
 		Map<String, Object> response = new HashMap<String, Object>();
 
 		Cliente cliente = clienteService.findById(id);
@@ -188,9 +214,12 @@ public class ClienteRestController {
 				nombreArchivo = iUploadFileService.copiar(archivo);
 			} catch (IOException ioe) {
 
-				response.put("mensaje", "Error al subir la imagen del cliente ");
-				response.put("error", ioe.getMessage().concat(": ").concat(ioe.getCause().getMessage()));
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+				response.put("mensaje",
+						"Error al subir la imagen del cliente ");
+				response.put("error", ioe.getMessage().concat(": ")
+						.concat(ioe.getCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>(response,
+						HttpStatus.INTERNAL_SERVER_ERROR);
 
 			}
 
@@ -202,7 +231,8 @@ public class ClienteRestController {
 			clienteService.updateId(cliente);
 
 			response.put("cliente", cliente);
-			response.put("mensaje", "Has subido correctamente la imagen :" + nombreArchivo);
+			response.put("mensaje",
+					"Has subido correctamente la imagen :" + nombreArchivo);
 
 		}
 
@@ -221,7 +251,8 @@ public class ClienteRestController {
 		}
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
+		headers.add(HttpHeaders.CONTENT_DISPOSITION,
+				"attachment; filename=\"" + recurso.getFilename() + "\"");
 
 		return new ResponseEntity<Resource>(recurso, headers, HttpStatus.OK);
 	}
