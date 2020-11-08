@@ -1,6 +1,7 @@
 package com.daleb.backend.api.rest.models;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -24,4 +25,6 @@ public class Factura {
 	private Date createAt;
 	@DBRef
 	private Cliente cliente;
+	
+	private List<ItemFactura> items;
 }
