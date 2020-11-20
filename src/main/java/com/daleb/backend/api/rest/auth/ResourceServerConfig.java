@@ -22,25 +22,33 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/page/**", "/api/clientes/uploads/img/**",
-						"/images/**","/api/clientes/prueba")
-				.permitAll()
+				.antMatchers(HttpMethod.GET, "/api/clientes",
+						"/api/clientes/page/**", "/api/clientes/uploads/img/**",
+						"/images/**", "/api/clientes/prueba")
+				.permitAll().antMatchers("/api/clientes/{id}").permitAll()
+				.antMatchers("/api/facturas/**").permitAll()
 				/*
-				 * .antMatchers(HttpMethod.GET,"/api/clientes/{id}").hasAnyRole("USER","ADMIN")
-				 * .antMatchers(HttpMethod.GET,"/api/clientes/{id}").hasAnyRole("USER","ADMIN")
-				 * .antMatchers(HttpMethod.POST,"/api/clientes/uploads").hasAnyRole("USER",
-				 * "ADMIN") .antMatchers("/api/clientes/**").hasRole("ADMIN")
+				 * .antMatchers(HttpMethod.GET,"/api/clientes/{id}").hasAnyRole(
+				 * "USER","ADMIN")
+				 * .antMatchers(HttpMethod.GET,"/api/clientes/{id}").hasAnyRole(
+				 * "USER","ADMIN")
+				 * .antMatchers(HttpMethod.POST,"/api/clientes/uploads").
+				 * hasAnyRole("USER", "ADMIN")
+				 * .antMatchers("/api/clientes/**").hasRole("ADMIN")
 				 */
-				.anyRequest().authenticated().and().cors().configurationSource(corsConfigurationSource());
+				.anyRequest().authenticated().and().cors()
+				.configurationSource(corsConfigurationSource());
 	}
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		config.setAllowedMethods(
+				Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowCredentials(true);
-		config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+		config.setAllowedHeaders(
+				Arrays.asList("Content-Type", "Authorization"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
