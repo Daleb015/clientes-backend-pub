@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -23,9 +24,12 @@ public class Factura {
 	@Field("create_at")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date createAt;
+
+	@JsonIgnore
 	@DBRef
 	private Cliente cliente;
 
+	@DBRef
 	private List<ItemFactura> items;
 
 	public Double getTotal() {

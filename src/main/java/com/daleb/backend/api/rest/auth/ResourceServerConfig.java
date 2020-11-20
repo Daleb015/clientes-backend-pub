@@ -23,7 +23,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/page/**", "/api/clientes/uploads/img/**",
-						"/images/**")
+						"/images/**","/api/clientes/prueba")
 				.permitAll()
 				/*
 				 * .antMatchers(HttpMethod.GET,"/api/clientes/{id}").hasAnyRole("USER","ADMIN")

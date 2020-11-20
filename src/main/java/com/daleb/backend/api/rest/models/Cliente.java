@@ -46,6 +46,7 @@ public class Cliente {
 	@DBRef(lazy = true)
 	private Region region;
 
+	@DBRef
 	private List<Factura> facturas;
 
 }
