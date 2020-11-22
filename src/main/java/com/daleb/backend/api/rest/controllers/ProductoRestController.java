@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.daleb.backend.api.rest.models.Producto;
 import com.daleb.backend.api.rest.services.ProductoService;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"http://localhost:4200","*"})
 @RestController
 @RequestMapping("/api/productos")
 public class ProductoRestController {
