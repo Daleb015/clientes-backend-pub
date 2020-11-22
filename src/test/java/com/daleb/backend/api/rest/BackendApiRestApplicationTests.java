@@ -3,10 +3,10 @@ package com.daleb.backend.api.rest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackendApiRestApplicationTests {
+public class BackendApiRestApplicationTests {
 
 	@org.junit.Test
-	void contextLoads() {
+	public void contextLoads() {
 	}
 
 }
