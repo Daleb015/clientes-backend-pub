@@ -17,37 +17,32 @@ import com.daleb.backend.api.rest.models.Usuario;
 import com.daleb.backend.api.rest.repositorys.UsuarioRepository;
 import com.daleb.backend.api.rest.services.UsuarioService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
-public class UsuarioServiceImpl implements UsuarioService,  UserDetailsService {
+public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Transactional(readOnly = true)
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username)
+			throws UsernameNotFoundException {
 		Usuario usuario = usuarioRepository.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-		
-		List<GrantedAuthority> authorithies = usuario.getRoles()
-				.stream()
+				.orElseThrow(() -> new UsernameNotFoundException(
+						"User Not Found with username: " + username));
+
+		List<GrantedAuthority> authorithies = usuario.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getNombre()))
-				.peek(authority -> log.info("Rol : " + authority.getAuthority()))
 				.collect(Collectors.toList());
-		
-		
-		User user = new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnable(), true, true, true, authorithies);
-		
-		return user;
+
+		return new User(usuario.getUsername(), usuario.getPassword(),
+				usuario.getEnable(), true, true, true, authorithies);
 	}
 
 	@Transactional(readOnly = true)
 	@Override
 	public Usuario findByUsername(String username) {
-		
+
 		return usuarioRepository.findByUsername(username).orElse(null);
 	}
 

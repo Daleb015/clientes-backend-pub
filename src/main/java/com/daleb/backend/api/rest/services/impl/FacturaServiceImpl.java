@@ -1,5 +1,6 @@
 package com.daleb.backend.api.rest.services.impl;
 
+import java.util.Date;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,12 @@ public class FacturaServiceImpl implements FacturaService {
 		factura.setItems(
 				factura.getItems().stream().map(x -> itemFacturaService.save(x))
 						.collect(Collectors.toList()));
-
+		factura.setCreateAt(new Date());
 		insertar(factura);
 
 		cliente.getFacturas().add(factura);
+
+		clienteService.updateId(cliente);
 
 		return factura;
 

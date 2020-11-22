@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daleb.backend.api.rest.models.Factura;
 import com.daleb.backend.api.rest.services.FacturaService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api/facturas")
@@ -35,8 +39,17 @@ public class FacturaRestController {
 		facturaService.delete(id);
 	}
 	
-	@PostMapping()
+	@PostMapping
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public Factura crear(@RequestBody Factura factura) {
+		
+		try {
+			log.info(new ObjectMapper().writeValueAsString(factura));
+		} catch (Exception e) {
+			log.warn(e.getMessage());
+		}
+		
+		
 		return facturaService.save(factura);
 	}
 

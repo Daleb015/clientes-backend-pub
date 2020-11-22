@@ -55,7 +55,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 	@Override
 	public Boolean eliminar(String nombreFoto) {
 		if (nombreFoto != null && !nombreFoto.isEmpty()) {
-			Path pathAnterior = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
+			Path pathAnterior = Paths.get(DIRECTORIO_UPLOAD).resolve(nombreFoto).toAbsolutePath();
 			File archivoAnterior = pathAnterior.toFile();
 
 			if (archivoAnterior.exists() && archivoAnterior.canRead()) {
