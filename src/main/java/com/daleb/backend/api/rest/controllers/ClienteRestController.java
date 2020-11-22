@@ -66,7 +66,7 @@ public class ClienteRestController {
 		return clienteService.findAll(pageable);
 	}
 
-	// @Secured({"ROLE_ADMIN", "ROLE_USER"})
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@GetMapping("/{id}")
 	public ResponseEntity<?> show(@PathVariable String id) {
 

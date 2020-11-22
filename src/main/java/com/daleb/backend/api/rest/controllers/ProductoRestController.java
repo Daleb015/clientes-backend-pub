@@ -3,6 +3,7 @@ package com.daleb.backend.api.rest.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ public class ProductoRestController {
 	@Autowired
 	private ProductoService productoService;
 	
+	@Secured({"ROLE_ADMIN"})
 	@GetMapping("/filtrar/nombre/{palabra}")
 	public List<Producto> filtrarProductos(@PathVariable String palabra){
 		return productoService.findByNombre(palabra);
