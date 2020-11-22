@@ -21,4 +21,9 @@ public class ItemFacturaServiceImpl implements ItemFacturaService {
 				.forEach(x -> itemFacturaRepository.deleteById(x.getId()));
 	}
 
+	@Override
+	public ItemFactura save(ItemFactura itemFactura) {
+		return itemFacturaRepository.save(itemFactura);
+	}
+
 }

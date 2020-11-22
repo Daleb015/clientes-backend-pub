@@ -6,4 +6,5 @@ import com.daleb.backend.api.rest.models.ItemFactura;
 
 public interface ItemFacturaService {
 	public void delete(List<ItemFactura> items);
+	public ItemFactura save(ItemFactura itemFactura);
 }

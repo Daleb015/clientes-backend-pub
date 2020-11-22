@@ -2,8 +2,6 @@ package com.daleb.backend.api.rest.controllers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.daleb.backend.api.rest.models.Cliente;
-import com.daleb.backend.api.rest.models.Factura;
-import com.daleb.backend.api.rest.models.ItemFactura;
-import com.daleb.backend.api.rest.models.Producto;
 import com.daleb.backend.api.rest.models.Region;
-import com.daleb.backend.api.rest.repositorys.ItemFacturaRepository;
-import com.daleb.backend.api.rest.repositorys.ProductoRepository;
 import com.daleb.backend.api.rest.services.ClienteService;
-import com.daleb.backend.api.rest.services.FacturaService;
 import com.daleb.backend.api.rest.services.RegionService;
 import com.daleb.backend.api.rest.services.UploadFileService;
 
@@ -62,48 +54,6 @@ public class ClienteRestController {
 
 	@Autowired
 	private RegionService regionService;
-
-	private FacturaService facturaService;
-
-	@Autowired
-	private ProductoRepository productoRepository;
-
-	@Autowired
-	private ItemFacturaRepository itemFacturaRepository;
-
-	@GetMapping("/prueba")
-	public Cliente probar() {
-
-		Cliente cliente = clienteService.findById("5f73611bb4591f2b1ca2a2a6");
-
-		Factura factura = new Factura();
-		factura.setCliente(cliente);
-		factura.setCreateAt(new Date());
-		factura.setDescripcion("factura de prueba");
-		factura.setObservacion("observacion de prueba");
-
-		Producto producto = new Producto();
-		producto.setCreateAt(new Date());
-		producto.setNombre("Televisor");
-		producto.setPrecio(590000.0);
-		productoRepository.save(producto);
-
-		ItemFactura itemFactura = new ItemFactura();
-		itemFactura.setCantidad(5);
-		itemFactura.setProducto(producto);
-		itemFacturaRepository.save(itemFactura);
-
-		List<ItemFactura> lista = Arrays.asList(itemFactura);
-		factura.setItems(lista);
-		facturaService.save(factura);
-
-		List<Factura> facturas = Arrays.asList(factura);
-		cliente.setFacturas(facturas);
-		clienteService.updateId(cliente);
-
-		return cliente;
-
-	}
 
 	@GetMapping()
 	public List<Cliente> index() {
@@ -134,8 +84,8 @@ public class ClienteRestController {
 		}
 
 		if (cliente == null) {
-			response.put("mensaje", "El cliente id ".concat(
-					id.concat(" No existe en la base de datos!")));
+			response.put("mensaje", "El cliente id "
+					.concat(id.concat(" No existe en la base de datos!")));
 			return new ResponseEntity<Map<String, Object>>(response,
 					HttpStatus.NOT_FOUND);
 		}
