@@ -24,10 +24,12 @@ El proyecto usa maven para la construcción y gestión de dependencias, para ell
 - Con un archivo dockerfile:
 
 ```
-```
 FROM adoptopenjdk/openjdk11:latest
+```
 ARG JAR_FILE=target/*.jar
+```
 COPY ${JAR_FILE} app.jar
+```
 ENTRYPOINT ["java","-jar","/app.jar"]
 
 
@@ -37,9 +39,9 @@ La configuración en el archivo de propiedades toma las variables de entorno en 
 - Los ejemplos de consumo de los endpoints se encuentran en el siguiente link de postman:
 https://www.getpostman.com/collections/c5b383b8a6f864d0f2bd
 
-Los servicios se consumen haciendo uso de un token jwt que se genera en el servicio de Generar token jwt, dentro del postman estan las credenciales para generarlo y los ejemplos de uso.
+Los servicios se consumen haciendo uso de un token jwt que se genera en el servicio de Generar token jwt, el servicio tiene ejemplos dentro del anterior link.
 
-Este servicio permite generar un token jwt, las credenciales para un usuario tipo administrador son admin:12345 o daniel:12345 siendo la diferencia de usar las segundas que se loguean como usuario y no administrador y esto limita las funcionalidades que puede realizar en los endpoints, ya que estos están protegidas de manera granular por el framework de spring security, lo que limita lo que se puede hacer en el backend y lo que se puede ver en el frontend.
+Dicho servicio permite generar un token jwt, las credenciales para un usuario tipo administrador son admin:12345 o para uno de tipo Usuario son daniel:12345, el tipo de token limita las funcionalidades que puede realizar en los endpoints, ya que estos están protegidas de manera granular por el framework de spring security, lo que limita lo que se puede hacer en el backend y lo que se puede ver en el frontend.
 
 
 El servicio actualmente queda desplegado en la nube de Heroku, al ser desplegado en el tier Free la aplicación se apagará y se desasignará los recursos usados cuando no se esté usando por cierto periodo de tiempo, esto implica que la foto guardada se deberá volver a cargar en el caso en que no aparecza y se debe a que el contenedor es de tipo stateless, debido al tipo de tier
